@@ -58,5 +58,6 @@ namespace ServiceRest_045_RafidFahar
             get { return _angkatan; }
             set { _angkatan = value; }
         }
+        //
     }
 }
