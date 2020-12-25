@@ -17,13 +17,21 @@ namespace ServiceRest_045_RafidFahar
         List<Mahasiswa> GetAllMahasiswa(); //mendapatkan kumpulan mahasiswa/seluruh data mahasiswa
 
         [OperationContract]                          //nama method
-        [WebGet(UriTemplate = "Mahasiswa/nim={nim}", ResponseFormat = WebMessageFormat.Json)] //untuk get
+        [WebGet(UriTemplate = "Mahasiswa/{nim}", ResponseFormat = WebMessageFormat.Json)] //untuk get
         Mahasiswa GetMahasiswaByNIM(string nim); //mengambil data berdasarkan nim
 
         //void CreateMahasiswa(mahasiswa mhs); tidak ada pengembalian/respond balik
         [OperationContract]
-        [WebInvoke(Method = "POST", UriTemplate = "Mahasiswa", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", UriTemplate = "CreateMahasiswa", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         string CreateMahasiswa(Mahasiswa mhs);
+
+        [OperationContract]
+        [WebInvoke(Method = "DELETE", UriTemplate = "DeleteMahasiswa/{nim}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        string DeleteMahasiswa(string nim);
+
+        [OperationContract]
+        [WebInvoke(Method = "PUT", UriTemplate = "UpdateMahasiswaByNIM", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        string UpdateMahasiswaByNIM(Mahasiswa mhs);
 
         // TODO: Add your service operations here
     }

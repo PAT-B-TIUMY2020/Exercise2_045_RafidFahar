@@ -4,19 +4,22 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ServiceRest_045_RafidFahar;
 
 
 namespace ServerConfig_045_RafidFahar
 {
     public partial class Form1 : Form
     {
-
+        ServiceHost hostObject;
         public Form1()
         {
             InitializeComponent();
+            buttonOFF.Enabled = false;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -37,24 +40,43 @@ namespace ServerConfig_045_RafidFahar
 
         private void buttonON_Click(object sender, EventArgs e)
         {
-            buttonON.Enabled = false;
-            buttonOFF.Enabled = true;
-            label3.Text = "Klik OFF Untuk Mematikan Server";
-            label2.Text = "Server ON";
+            hostObject = null;
 
-            Program.Server server = new Program.Server();
-            server.OnServer();
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    hostObject = new ServiceHost(typeof(TI_UMY));
+                    hostObject.Open();
+                });
+                label2.Text = "Server ON";
+                label3.Text = "Klik OFF untuk menonaktifkan server";
+                buttonON.Enabled = false;
+                buttonOFF.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                hostObject = null;
+                label2.Text = "Server Error";
+            }
         }
 
         private void buttonOFF_Click(object sender, EventArgs e)
         {
-            buttonON.Enabled = true;
-            buttonOFF.Enabled = false;
-            label3.Text = "Klik ON Untuk Menjalankan Server";
-            label2.Text = "Server OFF";
-
-            Program.Server server = new Program.Server();
-            server.OffServer();
+            try
+            {
+                hostObject.Abort();
+                label2.Text = "Server OFF";
+                label3.Text = "Klik ON untuk menghidupkan server";
+                buttonOFF.Enabled = false;
+                buttonON.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                buttonON.Enabled = false;
+                buttonOFF.Enabled = true;
+                label2.Text = "Server Error";
+            }
         }
     }
 }

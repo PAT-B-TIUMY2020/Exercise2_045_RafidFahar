@@ -37,6 +37,32 @@ namespace ServiceRest_045_RafidFahar
             return msg;
         }
 
+        public string DeleteMahasiswa(string nim)
+        {
+            SqlConnection con = new SqlConnection("Data Source=DESKTOP-C7VD68Q\\RAFIDFAHAR;Database=TI UMY;User Id=sa;Password=rf141200;Trusted_Connection=True;MultipleActiveResultSets=true");
+            string query = string.Format("DELETE from dbo.Mahasiswa where NIM = '{0}'", nim);
+            SqlCommand cmd = new SqlCommand(query, con);
+            int result = 0;
+            string a = "Gagal";
+
+            try
+            {
+                con.Open();
+                result = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                a = ex.ToString();
+            }
+
+            if (result != 0)
+            {
+                a = "Sukses";
+            }
+            return a;
+        }
+
         public List<Mahasiswa> GetAllMahasiswa()
         {
             {
@@ -75,7 +101,7 @@ namespace ServiceRest_045_RafidFahar
         public Mahasiswa GetMahasiswaByNIM(string nim)
         {
             Mahasiswa mhs = new Mahasiswa();
-            SqlConnection con = new SqlConnection("Data Source=LAPTOP-QHB05ME0\\FAFA;Initial Catalog=TI UMY;Persist Security Info=True;User ID=sa; Password=123");
+            SqlConnection con = new SqlConnection("Data Source=DESKTOP-C7VD68Q\\RAFIDFAHAR;Database=TI UMY;User Id=sa;Password=rf141200;Trusted_Connection=True;MultipleActiveResultSets=true");
             string query = String.Format("select Nama, NIM, Prodi, Angkatan from dbo.Mahasiswa where NIM = '{0}'", nim);
             SqlCommand com = new SqlCommand(query, con);
 
@@ -100,5 +126,30 @@ namespace ServiceRest_045_RafidFahar
             }
             return mhs;
         }
+
+        public string UpdateMahasiswaByNIM(Mahasiswa mhs)
+        {
+            string msg = "Gagal";
+
+            SqlConnection con = new SqlConnection("Data Source=DESKTOP-C7VD68Q\\RAFIDFAHAR;Database=TI UMY;User Id=sa;Password=rf141200;Trusted_Connection=True;MultipleActiveResultSets=true");
+            string query = string.Format("Update dbo.Mahasiswa set Nama = '{0}', Prodi = '{1}', Angkatan = '{2}' where NIM = '{3}'", mhs.nama, mhs.prodi, mhs.angkatan, mhs.nim);
+            SqlCommand cmd = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                msg = "Sukses";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(query);
+            }
+            return msg;
+        }
     }
+
+
 }
